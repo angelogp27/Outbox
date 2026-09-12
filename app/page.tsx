@@ -18,8 +18,18 @@ export default function Home() {
   const porcentajeUsado = Math.min((totalActual / presupuesto) * 100, 100);
   const seExcede = deltaActual < 0;
 
+  const eventosPasados = useOrdenStore((s) => s.eventosPasados);
+  const agregarItems = useOrdenStore((s) => s.agregarItems);
+
+  const cargarEjemplo = () => {
+    if (eventosPasados.length > 0) {
+      limpiarOrden();
+      agregarItems(eventosPasados[0].items);
+    }
+  };
+
   return (
-    <main className="flex flex-col h-full bg-zinc-950 text-zinc-100">
+    <main className="flex flex-col min-h-screen bg-zinc-950 text-zinc-100">
       {/* Header */}
       <header className="border-b border-zinc-800 px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -31,14 +41,24 @@ export default function Home() {
               </span>
             </h1>
           </div>
-          {items.length > 0 && (
-            <button
-              onClick={limpiarOrden}
-              className="text-xs text-zinc-500 hover:text-red-400 transition px-3 py-1.5 rounded border border-zinc-800 hover:border-red-900"
-            >
-              Vaciar orden
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {items.length === 0 && (
+              <button
+                onClick={cargarEjemplo}
+                className="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition px-3 py-1.5 rounded border border-zinc-700 cursor-pointer"
+              >
+                ✨ Simular orden de prueba
+              </button>
+            )}
+            {items.length > 0 && (
+              <button
+                onClick={limpiarOrden}
+                className="text-xs text-zinc-500 hover:text-red-400 transition px-3 py-1.5 rounded border border-zinc-800 hover:border-red-900 cursor-pointer"
+              >
+                Vaciar orden
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
