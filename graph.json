@@ -1,0 +1,176 @@
+{
+  "metadata": {
+    "project": "Outbox / ProcurePilot",
+    "generated_at": "2026-09-12T14:59:29.108623",
+    "generator": "Graphify Agentic Engine v1.0",
+    "total_nodes": 21,
+    "total_edges": 1,
+    "total_files": 21,
+    "total_lines": 8843,
+    "categories": {
+      "app": 4,
+      "components": 2,
+      "store": 1,
+      "lib": 1,
+      "config": 11,
+      "agents": 2
+    },
+    "assigned_user": "bryanjt318@gmail.com"
+  },
+  "nodes": [
+    {
+      "id": "graph.json",
+      "label": "graph.json",
+      "type": "module",
+      "lines": 176,
+      "path": "graph.json"
+    },
+    {
+      "id": "next-env.d.ts",
+      "label": "next-env.d.ts",
+      "type": "module",
+      "lines": 7,
+      "path": "next-env.d.ts"
+    },
+    {
+      "id": "next.config.ts",
+      "label": "next.config.ts",
+      "type": "module",
+      "lines": 7,
+      "path": "next.config.ts"
+    },
+    {
+      "id": "package-lock.json",
+      "label": "package-lock.json",
+      "type": "module",
+      "lines": 7032,
+      "path": "package-lock.json"
+    },
+    {
+      "id": "package.json",
+      "label": "package.json",
+      "type": "module",
+      "lines": 28,
+      "path": "package.json"
+    },
+    {
+      "id": "seed.json",
+      "label": "seed.json",
+      "type": "module",
+      "lines": 41,
+      "path": "seed.json"
+    },
+    {
+      "id": "tsconfig.json",
+      "label": "tsconfig.json",
+      "type": "module",
+      "lines": 34,
+      "path": "tsconfig.json"
+    },
+    {
+      "id": "types.ts",
+      "label": "types.ts",
+      "type": "module",
+      "lines": 45,
+      "path": "types.ts"
+    },
+    {
+      "id": ".agents/agentes_personalizados/agent.json",
+      "label": "agent.json",
+      "type": "agent",
+      "lines": 21,
+      "path": ".agents/agentes_personalizados/agent.json"
+    },
+    {
+      "id": ".agents/agentes_personalizados/handler.py",
+      "label": "handler.py",
+      "type": "agent",
+      "lines": 245,
+      "path": ".agents/agentes_personalizados/handler.py"
+    },
+    {
+      "id": "app/globals.css",
+      "label": "globals.css",
+      "type": "route",
+      "lines": 43,
+      "path": "app/globals.css"
+    },
+    {
+      "id": "app/layout.tsx",
+      "label": "layout.tsx",
+      "type": "route",
+      "lines": 29,
+      "path": "app/layout.tsx"
+    },
+    {
+      "id": "app/page.tsx",
+      "label": "page.tsx",
+      "type": "route",
+      "lines": 18,
+      "path": "app/page.tsx"
+    },
+    {
+      "id": "app/api/agent/graphify/route.ts",
+      "label": "route.ts",
+      "type": "route",
+      "lines": 79,
+      "path": "app/api/agent/graphify/route.ts"
+    },
+    {
+      "id": "app/components/OutBox.tsx",
+      "label": "OutBox.tsx",
+      "type": "component",
+      "lines": 539,
+      "path": "app/components/OutBox.tsx"
+    },
+    {
+      "id": "app/components/ScrollVideoScrubber.tsx",
+      "label": "ScrollVideoScrubber.tsx",
+      "type": "component",
+      "lines": 139,
+      "path": "app/components/ScrollVideoScrubber.tsx"
+    },
+    {
+      "id": "lib/exa/buscarProductos.ts",
+      "label": "buscarProductos.ts",
+      "type": "library",
+      "lines": 67,
+      "path": "lib/exa/buscarProductos.ts"
+    },
+    {
+      "id": "public/reporte_graphify.json",
+      "label": "reporte_graphify.json",
+      "type": "module",
+      "lines": 72,
+      "path": "public/reporte_graphify.json"
+    },
+    {
+      "id": "public/reports/auditoria_graphify.json",
+      "label": "auditoria_graphify.json",
+      "type": "module",
+      "lines": 79,
+      "path": "public/reports/auditoria_graphify.json"
+    },
+    {
+      "id": "scripts/extract_frames.py",
+      "label": "extract_frames.py",
+      "type": "module",
+      "lines": 35,
+      "path": "scripts/extract_frames.py"
+    },
+    {
+      "id": "store/useOrdenStore.ts",
+      "label": "useOrdenStore.ts",
+      "type": "state",
+      "lines": 107,
+      "path": "store/useOrdenStore.ts"
+    }
+  ],
+  "edges": [
+    {
+      "source": "app/api/agent/graphify/route.ts",
+      "target": ".agents/agentes_personalizados/agent.json",
+      "relation": "dispatches_agent"
+    }
+  ]
+}

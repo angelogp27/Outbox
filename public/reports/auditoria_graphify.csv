@@ -1,0 +1,11 @@
+Métrica de Arquitectura Graphify,Valor,Detalle / Contexto
+Proyecto,Outbox / ProcurePilot,Sistema Agéntico de Compras por Lote
+Usuario Propietario,bryanjt318@gmail.com,Permisos de edición y acceso concedidos
+Fecha de Análisis,2026-09-12T14:59:29.108623,Inspección determinista en tiempo real
+Total de Nodos (Módulos/Rutas),21,Nodos de Grafo Graph RAG
+Total de Conexiones (Edges),1,Dependencias y flujos acoplados
+Líneas de Código Analizadas,8843,Source Lines of Code (SLOC)
+Componentes UI,2,Vistas y componentes scrollytelling
+Módulos de Estado (Store),1,Reactividad en tiempo real (Zustand)
+Módulos de Agentes,2,Antigravity Custom Agents
+Integración Google Sheets,Conectada,Sincronizado para bryanjt318@gmail.com

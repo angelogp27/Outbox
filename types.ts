@@ -6,6 +6,7 @@ export type ProductoBuscado = {
   proveedor: string;
   precioAprox: number;
   url: string;
+  imagen?: string;
 };
 
 /** Una línea de la orden guarda el producto completo, no un id de catálogo */

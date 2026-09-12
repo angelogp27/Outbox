@@ -1,0 +1,79 @@
+{
+  "sheet_name": "Auditoria_Arquitectura_Graphify",
+  "owner": "bryanjt318@gmail.com",
+  "rows": [
+    [
+      "M\u00e9trica de Arquitectura Graphify",
+      "Valor",
+      "Detalle / Contexto"
+    ],
+    [
+      "Proyecto",
+      "Outbox / ProcurePilot",
+      "Sistema Ag\u00e9ntico de Compras por Lote"
+    ],
+    [
+      "Usuario Propietario",
+      "bryanjt318@gmail.com",
+      "Permisos de edici\u00f3n y acceso concedidos"
+    ],
+    [
+      "Fecha de An\u00e1lisis",
+      "2026-09-12T14:59:29.108623",
+      "Inspecci\u00f3n determinista en tiempo real"
+    ],
+    [
+      "Total de Nodos (M\u00f3dulos/Rutas)",
+      "21",
+      "Nodos de Grafo Graph RAG"
+    ],
+    [
+      "Total de Conexiones (Edges)",
+      "1",
+      "Dependencias y flujos acoplados"
+    ],
+    [
+      "L\u00edneas de C\u00f3digo Analizadas",
+      "8843",
+      "Source Lines of Code (SLOC)"
+    ],
+    [
+      "Componentes UI",
+      "2",
+      "Vistas y componentes scrollytelling"
+    ],
+    [
+      "M\u00f3dulos de Estado (Store)",
+      "1",
+      "Reactividad en tiempo real (Zustand)"
+    ],
+    [
+      "M\u00f3dulos de Agentes",
+      "2",
+      "Antigravity Custom Agents"
+    ],
+    [
+      "Integraci\u00f3n Google Sheets",
+      "Conectada",
+      "Sincronizado para bryanjt318@gmail.com"
+    ]
+  ],
+  "graph_metadata": {
+    "project": "Outbox / ProcurePilot",
+    "generated_at": "2026-09-12T14:59:29.108623",
+    "generator": "Graphify Agentic Engine v1.0",
+    "total_nodes": 21,
+    "total_edges": 1,
+    "total_files": 21,
+    "total_lines": 8843,
+    "categories": {
+      "app": 4,
+      "components": 2,
+      "store": 1,
+      "lib": 1,
+      "config": 11,
+      "agents": 2
+    },
+    "assigned_user": "bryanjt318@gmail.com"
+  }
+}
