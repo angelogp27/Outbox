@@ -1,6 +1,6 @@
 // Contrato compartido del equipo — Hackathon "Agents, Everywhere"
 
-/** Lo que devuelve Exa por producto (ya implementado en lib/exa/buscarProductos.ts) */
+/** Calidad de la URL detectada; evita tratar un catálogo como una ficha exacta. */
 export type TipoEnlaceProducto = "ficha" | "catalogo" | "sin_verificar";
 
 export type CategoriaProducto =
@@ -13,16 +13,15 @@ export type CategoriaProducto =
   | "equipamiento"
   | "otros";
 
+/** Lo que devuelve Exa por producto (ya implementado en lib/exa/buscarProductos.ts) */
 export type ProductoBuscado = {
   nombre: string;
   proveedor: string;
   precioAprox: number;
   url: string;
-  /** Calidad de la URL detectada por la app; evita presentar un catálogo como ficha. */
+  imagen?: string;
   tipoEnlace?: TipoEnlaceProducto;
-  /** Unidades que contiene una presentación, cuando Exa o el nombre del producto lo indica. */
   unidadesPorPresentacion?: number;
-  /** Categoría funcional para leer la orden como un plan de compra. */
   categoria?: CategoriaProducto;
 };
 
@@ -30,7 +29,6 @@ export type ProductoBuscado = {
 export type ItemOrden = {
   producto: ProductoBuscado;
   cantidad: number;
-  /** Opciones encontradas para que la persona pueda cambiar de producto antes de emitir. */
   alternativas?: ProductoBuscado[];
 };
 

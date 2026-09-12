@@ -9,32 +9,35 @@ const PRESUPUESTO_DEFECTO = 8000;
 const EVENTOS_PASADOS_SEED: EventoPasado[] = [
   {
     id: "ev-2024-03",
-    nombre: "Activación de marca — Marzo 2024 (120 personas)",
+    nombre: "Brand Activation — 120 Guests",
     items: [
       {
         producto: {
-          nombre: "Sillas plegables alquiler x unidad",
-          proveedor: "Alquileres Lima SAC",
+          nombre: "Folding Chairs Rental (unit)",
+          proveedor: "Lima Event Rentals",
           precioAprox: 5.0,
           url: "https://alquilereslima.pe/sillas",
+          imagen: "https://images.unsplash.com/photo-1506898667547-42e22a46e125?w=500&auto=format&fit=crop&q=80",
         },
         cantidad: 120,
       },
       {
         producto: {
-          nombre: "Mesa rectangular 2.4m alquiler",
-          proveedor: "Alquileres Lima SAC",
+          nombre: "Rectangular Table 2.4m Rental",
+          proveedor: "Lima Event Rentals",
           precioAprox: 25.0,
           url: "https://alquilereslima.pe/mesas",
+          imagen: "https://images.unsplash.com/photo-1530629013299-6cb10d168419?w=500&auto=format&fit=crop&q=80",
         },
         cantidad: 15,
       },
       {
         producto: {
-          nombre: "Vasos descartables paquete x 50",
-          proveedor: "Eco Yura Perú",
+          nombre: "Disposable Cups Pack x 50",
+          proveedor: "Eco Supplies Peru",
           precioAprox: 8.5,
           url: "https://ecoyura.pe/vasos",
+          imagen: "https://images.unsplash.com/photo-1572119865084-43c285814d63?w=500&auto=format&fit=crop&q=80",
         },
         cantidad: 5,
       },

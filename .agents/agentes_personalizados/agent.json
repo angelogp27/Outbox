@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.antigravity.google/agent/v1.json",
+  "name": "Agentes Personalizados",
+  "version": "1.0.0",
+  "description": "Agente autónomo Graph RAG que procesa grafos de conocimiento de Graphify y exporta métricas arquitectónicas a Google Sheets.",
+  "runtime": {
+    "type": "python",
+    "entrypoint": "handler.py",
+    "python_version": ">=3.10"
+  },
+  "inputs": {
+    "task": { "type": "string", "required": true },
+    "sheet_name": { "type": "string", "required": false, "default": "Auditoria_Arquitectura_Graphify" },
+    "share_email": { "type": "string", "required": false }
+  },
+  "capabilities": {
+    "reads_stdin": true,
+    "writes_stdout": true,
+    "network_access": true
+  }
+}

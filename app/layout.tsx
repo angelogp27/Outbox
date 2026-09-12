@@ -14,17 +14,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Outbox — Copiloto de Compras",
-  description: "Copiloto agéntico de compras por lote para eventos",
+  title: "OutBox",
+  description: "Autonomous batch procurement copilot for corporate events and supplies",
+  icons: {
+    icon: [
+      { url: "/favicon.png?v=4" },
+      { url: "/favicon-32.png?v=4", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-64.png?v=4", sizes: "64x64", type: "image/png" },
+    ],
+    shortcut: "/favicon.png?v=4",
+    apple: "/favicon-64.png?v=4",
+  },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
+      <head>
+        <link rel="icon" href="/favicon.png?v=3" sizes="any" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png?v=3" />
+        <link rel="apple-touch-icon" href="/favicon-64.png?v=3" />
+      </head>
+      <body className="min-h-screen bg-[#090a0f] text-[#f3f4f6] flex flex-col">
         <CopilotProvider>{children}</CopilotProvider>
       </body>
     </html>

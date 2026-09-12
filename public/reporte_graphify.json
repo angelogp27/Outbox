@@ -1,0 +1,72 @@
+{
+  "sheet_name": "Auditoria_Outbox_Graphify",
+  "rows": [
+    [
+      "M\u00e9trica de Arquitectura Graphify",
+      "Valor",
+      "Detalle"
+    ],
+    [
+      "Proyecto",
+      "Outbox / ProcurePilot",
+      "Sistema Ag\u00e9ntico de Adquisiciones"
+    ],
+    [
+      "Fecha de An\u00e1lisis",
+      "2026-09-12T13:55:42.523474",
+      "Inspecci\u00f3n determinista"
+    ],
+    [
+      "Total de Nodos (M\u00f3dulos/Rutas)",
+      "14",
+      "Nodos de Grafo Graph RAG"
+    ],
+    [
+      "Total de Conexiones (Edges)",
+      "0",
+      "Dependencias acopladas"
+    ],
+    [
+      "L\u00edneas de C\u00f3digo Analizadas",
+      "7926",
+      "SLOC"
+    ],
+    [
+      "Componentes UI",
+      "0",
+      "Vistas minimalistas"
+    ],
+    [
+      "M\u00f3dulos de Estado (Store)",
+      "1",
+      "Reactividad en tiempo real"
+    ],
+    [
+      "M\u00f3dulos de Agentes",
+      "2",
+      "Antigravity Custom Agents"
+    ],
+    [
+      "Integraci\u00f3n Google Sheets",
+      "Activa",
+      "Sync autom\u00e1tico v\u00eda Graphify Agent"
+    ]
+  ],
+  "graph_metadata": {
+    "project": "Outbox / ProcurePilot",
+    "generated_at": "2026-09-12T13:55:42.523474",
+    "generator": "Graphify Agentic Engine v1.0",
+    "total_nodes": 14,
+    "total_edges": 0,
+    "total_files": 14,
+    "total_lines": 7926,
+    "categories": {
+      "app": 3,
+      "components": 0,
+      "store": 1,
+      "lib": 1,
+      "config": 7,
+      "agents": 2
+    }
+  }
+}
