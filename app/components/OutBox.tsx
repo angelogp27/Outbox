@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { useOrdenStore } from "../../store/useOrdenStore";
 import { ScrollVideoScrubber } from "./ScrollVideoScrubber";
@@ -51,6 +51,7 @@ export function OutBox() {
   const agregarItems = useOrdenStore((s) => s.agregarItems);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const orderSectionRef = useRef<HTMLDivElement | null>(null);
 
   const totalActual = total();
   const saldoDisponible = delta();
@@ -64,17 +65,29 @@ export function OutBox() {
     }
   };
 
+  const handleViewOrder = () => {
+    if (items.length === 0) {
+      cargarEjemplo();
+    }
+    orderSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="w-full relative space-y-10">
       
       {/* 1. MINIMAL HEADER BAR */}
-      <header className="sticky top-4 z-40 w-full max-w-4xl mx-auto px-4">
-        <nav className="rounded-full px-6 py-3 bg-[#111217] shadow-xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-bold text-white tracking-widest uppercase">
-              OutBox
-            </span>
-            <span className="hidden sm:inline-block text-xs text-zinc-400 font-mono">
+      <header className="sticky top-4 z-40 w-full max-w-5xl mx-auto px-4">
+        <nav className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 bg-[#111217] shadow-xl flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <Image
+              src="/logo-outbox.png"
+              alt="OutBox"
+              width={1466}
+              height={356}
+              className="h-7 sm:h-8 md:h-8.5 w-auto object-contain shrink-0"
+              priority
+            />
+            <span className="hidden sm:inline-block text-[11px] sm:text-xs text-zinc-400 font-mono border-l border-zinc-700/60 pl-2 sm:pl-2.5 py-0.5 whitespace-nowrap">
               Procurement Copilot
             </span>
           </div>
@@ -82,10 +95,10 @@ export function OutBox() {
           <div className="flex items-center gap-2">
             {items.length === 0 ? (
               <button
-                onClick={cargarEjemplo}
+                onClick={handleViewOrder}
                 className="px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer"
               >
-                Simulate Order
+                View Order
               </button>
             ) : (
               <button
@@ -108,10 +121,6 @@ export function OutBox() {
 
         {/* Hero Editorial Content */}
         <div className="relative z-10 max-w-2xl mx-auto space-y-4 px-4 py-12 pointer-events-none">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 text-xs font-medium text-zinc-300 pointer-events-auto">
-            Autonomous Batch Procurement
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
             Procurement Infrastructure for Live Events
           </h1>
@@ -121,20 +130,21 @@ export function OutBox() {
           </p>
 
           <div className="pt-2 pointer-events-auto flex items-center justify-center gap-3">
-            {items.length === 0 && (
-              <button
-                onClick={cargarEjemplo}
-                className="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer"
-              >
-                Simulate Order
-              </button>
-            )}
+            <button
+              onClick={handleViewOrder}
+              className="px-8 py-3 rounded-full text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer shadow-lg inline-flex items-center gap-2"
+            >
+              <span>View Order</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
 
       {/* 3. PROCUREMENT CONSOLE (ESSENTIAL ONLY: BUDGET & ORDER ITEMS) */}
-      <section className="w-full max-w-3xl mx-auto space-y-6 px-4">
+      <section ref={orderSectionRef} className="w-full max-w-3xl mx-auto space-y-6 px-4 scroll-mt-24">
         
         {/* Budget Overview */}
         <div className="rounded-2xl p-6 bg-[#111217] space-y-3">

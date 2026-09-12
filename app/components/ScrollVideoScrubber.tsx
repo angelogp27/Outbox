@@ -130,19 +130,6 @@ export function ScrollVideoScrubber({ onScrollProgress }: HeroScrollyCartProps) 
         </div>
       )}
 
-      {/* Flat minimal top status */}
-      <div className="absolute top-4 left-6 z-10 pointer-events-none">
-        <span className="text-xs font-mono tracking-wider uppercase text-zinc-400 bg-zinc-900/90 px-3 py-1 rounded-full">
-          Cart Simulation
-        </span>
-      </div>
-
-      <div className="absolute top-4 right-6 z-10 pointer-events-none hidden sm:block">
-        <span className="text-xs text-zinc-400 bg-zinc-900/90 px-3 py-1 rounded-full">
-          Scroll down to advance
-        </span>
-      </div>
-
       {/* Flat progress bar at bottom */}
       <div className="absolute bottom-0 inset-x-0 h-1 bg-zinc-800 pointer-events-none">
         <div
