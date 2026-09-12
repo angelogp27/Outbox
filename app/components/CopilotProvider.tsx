@@ -18,6 +18,7 @@ export function CopilotProvider({ children }: { children: React.ReactNode }) {
       <WhatsappBridge />
       {children}
       <CopilotSidebar
+        defaultOpen={false}
         labels={{
           title: "Copiloto de compras",
           initial:
