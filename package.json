@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "whatsapp:webhook": "tsx server/whatsappWebhook.ts",
+    "whatsapp:vincular": "tsx scripts/vincularWhatsapp.ts",
+    "whatsapp:test": "curl -X POST http://localhost:3001/webhook/evolution -H 'Content-Type: application/json' -d @scripts/ejemplo-payload.json"
   },
   "dependencies": {
     "@copilotkit/react-core": "^1.71.1",
     "@copilotkit/react-ui": "^1.71.1",
     "@copilotkit/runtime": "^1.71.1",
+    "@copilotkit/runtime-client-gql": "^1.71.1",
     "exa-js": "^2.19.0",
     "next": "16.3.5",
     "openai": "^7.15.0",
@@ -27,6 +31,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

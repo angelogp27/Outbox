@@ -3,6 +3,7 @@
 import "@copilotkit/react-ui/styles.css";
 import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotSidebar } from "@copilotkit/react-ui";
+import { WhatsappBridge } from "./WhatsappBridge";
 
 export function CopilotProvider({ children }: { children: React.ReactNode }) {
   // Este build de CopilotKit hace `new URL(runtimeUrl)` sin base, así que exige
@@ -14,6 +15,7 @@ export function CopilotProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CopilotKit runtimeUrl={runtimeUrl}>
+      <WhatsappBridge />
       {children}
       <CopilotSidebar
         labels={{

@@ -1,0 +1,16 @@
+{
+  "event": "messages.upsert",
+  "instance": "compras-demo",
+  "data": {
+    "key": {
+      "remoteJid": "51999999999@s.whatsapp.net",
+      "fromMe": false,
+      "id": "3EB0ABC123"
+    },
+    "pushName": "Encargado de compras",
+    "message": {
+      "conversation": "Equipar una activación de marca para 150 personas, presupuesto S/ 8,000, entrega el viernes"
+    },
+    "messageTimestamp": 1731100000
+  }
+}
