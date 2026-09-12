@@ -1,4 +1,5 @@
 import { enviarMensajeTexto } from "./evolutionClient";
+import { linkGoogleSheets } from "@/lib/sheets/reportarGoogleSheets";
 import type { OrdenAprobada } from "@/types";
 
 // Salida del flujo: cuando la orden se aprueba (ver renderAndWaitForResponse
@@ -12,7 +13,8 @@ function formatearConfirmacion(aprobada: OrdenAprobada): string {
     `✅ Orden aprobada\n` +
     `${nItems} ítem(s) · S/ ${aprobada.total.toFixed(2)} · ` +
     `${aprobada.proveedores} proveedor(es)\n` +
-    `Entrega: ${aprobada.fecha}`
+    `Entrega: ${aprobada.fecha}\n` +
+    `Reporte en Sheets: ${linkGoogleSheets()}`
   );
 }
 

@@ -185,7 +185,7 @@ export default function Home() {
                   S/ {totalActual.toFixed(2)}
                 </span>
                 <span className="text-zinc-500 text-sm ml-1">
-                  / S/ {presupuesto.toLocaleString()}
+                  / S/ {presupuesto.toLocaleString("en-US")}
                 </span>
               </div>
               <div
