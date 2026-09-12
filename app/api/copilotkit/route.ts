@@ -23,10 +23,41 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
+  const hasValidKey = Boolean(
+    process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
+  );
+
   const openai = new OpenAI({
-    apiKey,
+    apiKey: apiKey || "dummy-key-for-handshake",
     baseURL: process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1",
   });
+
+  if (!hasValidKey) {
+    // Si no hay key configurada en .env.local, interceptar completions para responder
+    // amigablemente dentro del chat en lugar de crashear con "Missing Authentication header"
+    openai.chat.completions.create = (async function* () {
+      yield {
+        choices: [
+          {
+            delta: {
+              role: "assistant",
+              content:
+                "⚠️ **Falta configurar `OPENROUTER_API_KEY`** en tu archivo `.env.local`.\n\n" +
+                "Para que el agente pueda razonar y buscar productos en vivo:\n\n" +
+                "1. Abre o crea el archivo `.env.local` en la raíz del proyecto.\n" +
+                "2. Agrega tus credenciales (puedes basarte en `.env.example`):\n" +
+                "```env\n" +
+                "OPENROUTER_API_KEY=tu_api_key_aqui\n" +
+                "OPENROUTER_MODEL=nvidia/nemotron-3-super-120b-a12b:free\n" +
+                "EXA_API_KEY=tu_api_key_de_exa\n" +
+                "```\n" +
+                "3. Guarda el archivo y envía tu mensaje nuevamente.",
+            },
+          },
+        ],
+      };
+    }) as any;
+  }
 
   const serviceAdapter = new OpenAIAdapter({
     openai: openai as any,
