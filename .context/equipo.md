@@ -67,6 +67,8 @@ puedan enchufarse cuanto antes.
   nunca bloquea la demo si la sesión falla.
 - `reportarGoogleSheets`: service account de Google, función que agrega una fila (fecha,
   ítems, total, proveedores) a una hoja al aprobar la orden.
+- `enriquecerConExa` (última prioridad, solo si sobra tiempo): búsqueda web con Exa como
+  referencia de precio externo de un solo ítem, en UNA acción. Nunca en la ruta crítica.
 - Ensayar el guion de demo (60–90 s) apenas la Persona 3 tenga el flujo completo.
 - Grabar el video de respaldo con la corrida perfecta **antes de las 3:30**.
 - README de 1 párrafo (problema, solución, rol de CopilotKit).

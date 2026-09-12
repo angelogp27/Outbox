@@ -59,12 +59,13 @@ DECIDIDO — post-aprobación (fuera de la ruta crítica, no bloquea la demo si 
 - reportarGoogleSheets: al aprobar la orden, agrega una fila (fecha, ítems, total, proveedores)
   a una hoja de Google Sheets vía service account (sin OAuth interactivo) como "reporte de
   resultado".
+- enriquecerConExa: en UNA acción, búsqueda web con Exa (sponsor) como referencia de precio
+  externo de un solo ítem. Última prioridad del bloque DECIDIDO: solo se implementa si el
+  resto (MUST + WhatsApp + Sheets) ya funciona sólido. Nunca en la ruta crítica de la demo.
 
 NICE (solo si sobra tiempo, en este orden):
 - repetirEventoPasado: "arma lo mismo que la activación de marzo pero para 200" — leer un
   pedido histórico del seed y reescalarlo. Muy agéntico, cero fricción.
-- Enriquecer UNA acción con búsqueda web (sponsor Exa) como referencia de precio externo de un
-  solo ítem. Nunca en la ruta crítica de la demo.
 - Input por voz con Web Speech API (suma "superficie inesperada").
 
 NO hacer (fuera de alcance / rompe la demo):
