@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buscarProductos } from "@/lib/exa/buscarProductos";
+import { buscarProductosConRespaldo as buscarProductos } from "@/lib/exa/buscarProductosConRespaldo";
 
 // Envuelve buscarProductos en una API route porque necesita EXA_API_KEY —
 // eso no puede llamarse directo desde un componente cliente (se filtraría la key
