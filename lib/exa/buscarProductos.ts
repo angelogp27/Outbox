@@ -37,7 +37,7 @@ const OUTPUT_SCHEMA = {
     },
   },
   required: ["productos"],
-} as const;
+};
 
 /**
  * Busca productos reales para un ítem del evento (p.ej. "vasos descartables para 150
@@ -56,7 +56,8 @@ export async function buscarProductos(
   const result = await exa.search(consulta, {
     type: "auto",
     systemPrompt: SYSTEM_PROMPT,
-    outputSchema: OUTPUT_SCHEMA,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    outputSchema: OUTPUT_SCHEMA as any,
     contents: { highlights: true },
     ...(opts.numResults ? { numResults: opts.numResults } : {}),
   });
