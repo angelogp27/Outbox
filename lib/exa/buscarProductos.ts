@@ -20,7 +20,7 @@ const SYSTEM_PROMPT =
   "Omite resultados sin precio verificable; nunca inventes un precio.";
 
 const OUTPUT_SCHEMA = {
-  type: "object",
+  type: "object" as const,
   properties: {
     productos: {
       type: "array",
@@ -49,19 +49,18 @@ export async function buscarProductos(
   consulta: string,
   opts: BuscarProductosOpts = {}
 ): Promise<ProductoBuscado[]> {
-  // La SDK instalada (exa-js 1.10.x) solo reconoce EXASEARCH_API_KEY como env var
-  // implícita; pasamos EXA_API_KEY explícito para no depender de ese detalle interno.
   const exa = new Exa(process.env.EXA_API_KEY);
 
   const result = await exa.search(consulta, {
     type: "auto",
     systemPrompt: SYSTEM_PROMPT,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    outputSchema: OUTPUT_SCHEMA as any,
+    outputSchema: OUTPUT_SCHEMA,
     contents: { highlights: true },
     ...(opts.numResults ? { numResults: opts.numResults } : {}),
   });
 
-  const productos = (result as any).output?.content?.productos;
-  return Array.isArray(productos) ? productos : [];
+  const productos = (
+    result as { output?: { content?: { productos?: unknown } } }
+  ).output?.content?.productos;
+  return Array.isArray(productos) ? (productos as ProductoBuscado[]) : [];
 }

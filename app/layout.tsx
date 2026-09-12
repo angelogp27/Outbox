@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { CopilotProvider } from "./components/CopilotProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +34,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <head>
-        <link rel="icon" href="/favicon.png?v=3" sizes="any" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png?v=3" />
-        <link rel="apple-touch-icon" href="/favicon-64.png?v=3" />
+        <link rel="icon" href="/favicon.png?v=4" sizes="any" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png?v=4" />
+        <link rel="apple-touch-icon" href="/favicon-64.png?v=4" />
       </head>
-      <body className="min-h-screen bg-[#090a0f] text-[#f3f4f6] flex flex-col">{children}</body>
+      <body className="min-h-screen bg-[#090a0f] text-[#f3f4f6] flex flex-col">
+        <CopilotProvider>{children}</CopilotProvider>
+      </body>
     </html>
   );
 }
