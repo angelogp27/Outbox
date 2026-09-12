@@ -43,7 +43,8 @@ MUST (esto es el proyecto, en este orden):
 2. Integrar CopilotKit: provider <CopilotKit> + <CopilotSidebar> + CopilotRuntime en una API route.
 3. Exponer el contexto de pantalla con useCopilotReadable: el filtro actual, la orden en
    curso y el presupuesto. ESTE es el corazón del tema.
-4. 4 acciones con useCopilotAction que MODIFIQUEN el estado en vivo (orden en este orden):
+4. 4 acciones con useCopilotAction que MODIFIQUEN el estado en vivo (orden en este orden),
+   más `ajustarOrden` YA IMPLEMENTADA (ver nota abajo):
    a) armarCanastaDesdeMeta: recibe {tipoEvento, numPersonas, presupuesto, fecha}, decide qué
       ítems hacen falta, busca cada uno en vivo con `buscarProductos` (Exa) y llena la orden
       con lo que encuentra.
@@ -54,6 +55,10 @@ MUST (esto es el proyecto, en este orden):
       y tamaño de evento (p.ej. "para 150 personas faltan vasos y bolsas de basura"). ← golpe
       de "me salvó de un olvido".
    d) consolidarPorProveedor: agrupa la orden por proveedor para reducir envíos/tiempos.
+   e) ajustarOrden (IMPLEMENTADA, fuera de la lista original): recibe una instrucción libre
+      ("más variedad de dulces", "agrega globos"), busca con Exa y AGREGA lo encontrado a la
+      orden sin borrar lo que ya había. Cubre pedidos de refinamiento que las 4 de arriba no
+      cubrían.
 5. Human-in-the-loop en la acción de EMITIR la orden: usar renderAndWaitForResponse para
    mostrar "Voy a emitir esta orden: N ítems, total S/X, M proveedores, entrega [fecha]
    — [Aprobar] [Editar] [Cancelar]" y solo ejecutar tras aprobación. Al aprobar, mostrar una
@@ -90,8 +95,10 @@ NO hacer (fuera de alcance / rompe la demo):
 ## Stack
 - Next.js (App Router) + TypeScript.
 - CopilotKit: @copilotkit/react-core, @copilotkit/react-ui; CopilotRuntime en una API route.
-- LLM vía OpenAI o OpenRouter (sponsors). Modelo rápido y barato.
-- Estado en React (useState) o Zustand. Persistencia opcional: localStorage. Sin base de datos.
+- LLM vía OpenRouter, modelo gratuito fijo `nvidia/nemotron-3-super-120b-a12b:free` (llama
+  bien la función, a diferencia del router automático `openrouter/free` que es inconsistente).
+- Estado: Zustand real en `store/useOrdenStore.ts` (YA IMPLEMENTADO, Persona 1) + tipos
+  compartidos en `types.ts` (raíz). Sin base de datos.
 - WhatsApp: Evolution API (self-hosted, Docker) — disparador de entrada del flujo (webhook).
 - Reporte: Google Sheets API (service account) — fila por orden emitida, post-aprobación, no crítica.
 - Catálogo: Exa API (`exa-js`) vía `lib/exa/buscarProductos.ts` — búsqueda en vivo con

@@ -1,0 +1,38 @@
+{
+  "presupuesto": 8000,
+  "eventosPasados": [
+    {
+      "id": "ev-2024-03",
+      "nombre": "Activación de marca — Marzo 2024 (120 personas)",
+      "items": [
+        {
+          "producto": {
+            "nombre": "Sillas plegables alquiler x unidad",
+            "proveedor": "Alquileres Lima SAC",
+            "precioAprox": 5.0,
+            "url": "https://alquilereslima.pe/sillas"
+          },
+          "cantidad": 120
+        },
+        {
+          "producto": {
+            "nombre": "Mesa rectangular 2.4m alquiler",
+            "proveedor": "Alquileres Lima SAC",
+            "precioAprox": 25.0,
+            "url": "https://alquilereslima.pe/mesas"
+          },
+          "cantidad": 15
+        },
+        {
+          "producto": {
+            "nombre": "Vasos descartables paquete x 50",
+            "proveedor": "Eco Yura Perú",
+            "precioAprox": 8.5,
+            "url": "https://ecoyura.pe/vasos"
+          },
+          "cantidad": 5
+        }
+      ]
+    }
+  ]
+}

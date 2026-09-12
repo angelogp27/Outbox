@@ -1,33 +1,31 @@
-"use client";
-
-import "@copilotkit/react-ui/styles.css";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CopilotKit } from "@copilotkit/react-core";
-import { CopilotSidebar } from "@copilotkit/react-ui";
+import { CopilotProvider } from "./components/CopilotProvider";
 
-// Respaldo temporal mientras llega el scaffold oficial de Persona 1 — mismo
-// contrato (types/store), se puede reemplazar sin tocar el resto del código.
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Este build de CopilotKit hace `new URL(runtimeUrl)` sin base, así que exige
-  // una URL absoluta — una relativa como "/api/copilotkit" revienta con "Invalid URL".
-  const runtimeUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/api/copilotkit`
-      : "/api/copilotkit";
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Outbox — Copiloto de Compras",
+  description: "Copiloto agéntico de compras por lote para eventos",
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es">
-      <body>
-        <CopilotKit runtimeUrl={runtimeUrl}>
-          {children}
-          <CopilotSidebar
-            labels={{
-              title: "Copiloto de compras",
-              initial:
-                "Describe el evento en una frase: tipo, número de personas, presupuesto y fecha.",
-            }}
-          />
-        </CopilotKit>
+    <html
+      lang="es"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+    >
+      <body className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
+        <CopilotProvider>{children}</CopilotProvider>
       </body>
     </html>
   );

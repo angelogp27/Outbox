@@ -8,12 +8,18 @@ MOCK de lo que todavía no existe — nadie se queda mirando a otro trabajar. La
 real ocurre en 2 puntos de sincronización cortos (min 45 y min 90), no en una entrega en
 cadena.
 
-## Ya construido (no lo repitan): `lib/exa/buscarProductos.ts`
-El catálogo YA NO se siembra en `seed.json`: se reemplazó por búsqueda en vivo con la API
-de Exa. La función `buscarProductos(consulta, { numResults? })` ya existe, está probada en
-vivo (con la API key real, en `.env.local`) y devuelve `ProductoBuscado[]`. Persona 3 la
-importa y la usa tal cual — nadie más necesita tocarla salvo para ajustar el `systemPrompt`
-o el `outputSchema` si algo no rinde bien en ensayo.
+## Ya construido (no lo repitan)
+- `lib/exa/buscarProductos.ts`: reemplaza el catálogo sembrado, busca en vivo con Exa
+  (`exa-js` v2). Probada en vivo, devuelve `ProductoBuscado[]`.
+- `types.ts` (raíz) y `store/useOrdenStore.ts`: el store real de Persona 1, ya integrado
+  (Zustand, sin mock). Métodos: `items`, `presupuesto`, `agregarItem(s)`, `removerItem`,
+  `actualizarCantidad`, `reemplazarItems`, `limpiarOrden`, `setPresupuesto`, `total()`,
+  `delta()`, `proveedoresUnicos()`.
+- `armarCanastaDesdeMeta` y **`ajustarOrden`** (nueva, 5ª acción): la primera arma la orden
+  desde cero; la segunda recibe una instrucción libre ("más variedad de dulces", "agrega
+  globos"), busca en Exa y AGREGA sin borrar lo que ya había. Ambas en `app/page.tsx`.
+- LLM fijo en `nvidia/nemotron-3-super-120b-a12b:free` vía OpenRouter (llama la función
+  bien y consistente; el router automático `openrouter/free` no).
 
 ## Contrato compartido (acordar entre los 4, primeros 10 min)
 ```ts
