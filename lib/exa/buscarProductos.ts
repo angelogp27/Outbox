@@ -1,15 +1,14 @@
 import Exa from "exa-js";
+import "server-only";
+import { clasificarCategoriaProducto } from "@/lib/categorias";
+import { clasificarEnlaceProducto } from "@/lib/producto";
+import type { ProductoBuscado } from "@/types";
 
 // Reemplaza el catálogo sembrado: en lugar de leer seed.json, cada acción que
 // necesita productos llama a esta función y busca en la web en vivo con Exa.
 // Requiere EXA_API_KEY en el entorno (ver .env.local).
 
-export type ProductoBuscado = {
-  nombre: string;
-  proveedor: string;
-  precioAprox: number;
-  url: string;
-};
+export type { ProductoBuscado } from "@/types";
 
 type BuscarProductosOpts = {
   numResults?: number;
@@ -18,6 +17,10 @@ type BuscarProductosOpts = {
 const SYSTEM_PROMPT =
   "Devuelve productos reales en venta o alquiler en Perú, con precio en soles (S/). " +
   "Omite resultados sin precio verificable; nunca inventes un precio.";
+
+const PROMPT_ENLACE_FICHA =
+  "Entrega solo la URL de la ficha exacta del producto; omite paginas de inicio, categoria, coleccion o resultados de busqueda. " +
+  "Incluye unidadesPorPresentacion cuando la fuente o el nombre indique un paquete, caja o pack.";
 
 const OUTPUT_SCHEMA = {
   type: "object" as const,
@@ -31,6 +34,7 @@ const OUTPUT_SCHEMA = {
           precioAprox: { type: "number" },
           proveedor: { type: "string" },
           url: { type: "string" },
+          unidadesPorPresentacion: { type: "number" },
         },
         required: ["nombre", "precioAprox", "proveedor", "url"],
       },
@@ -53,7 +57,7 @@ export async function buscarProductos(
 
   const result = await exa.search(consulta, {
     type: "auto",
-    systemPrompt: SYSTEM_PROMPT,
+    systemPrompt: `${SYSTEM_PROMPT} ${PROMPT_ENLACE_FICHA}`,
     outputSchema: OUTPUT_SCHEMA,
     contents: { highlights: true },
     ...(opts.numResults ? { numResults: opts.numResults } : {}),
@@ -62,5 +66,22 @@ export async function buscarProductos(
   const productos = (
     result as { output?: { content?: { productos?: unknown } } }
   ).output?.content?.productos;
-  return Array.isArray(productos) ? (productos as ProductoBuscado[]) : [];
+  if (!Array.isArray(productos)) return [];
+
+  return (productos as ProductoBuscado[]).map((producto) => {
+    const productoNormalizado: ProductoBuscado = {
+      ...producto,
+      tipoEnlace: clasificarEnlaceProducto(producto.url),
+      unidadesPorPresentacion:
+        typeof producto.unidadesPorPresentacion === "number" &&
+        producto.unidadesPorPresentacion > 0
+          ? Math.floor(producto.unidadesPorPresentacion)
+          : undefined,
+    };
+
+    return {
+      ...productoNormalizado,
+      categoria: clasificarCategoriaProducto(productoNormalizado),
+    };
+  });
 }

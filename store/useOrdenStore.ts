@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import type { ItemOrden, EventoPasado } from "../types";
+import type { ItemOrden, EventoPasado, ProductoBuscado } from "../types";
 
 const PRESUPUESTO_DEFECTO = 8000;
 
@@ -53,6 +53,11 @@ interface OrdenState {
   agregarItems: (items: ItemOrden[]) => void;
   removerItem: (index: number) => void;
   actualizarCantidad: (index: number, cantidad: number) => void;
+  actualizarProducto: (
+    index: number,
+    producto: ProductoBuscado,
+    cantidad: number
+  ) => void;
   reemplazarItems: (items: ItemOrden[]) => void;
   limpiarOrden: () => void;
   setPresupuesto: (presupuesto: number) => void;
@@ -81,6 +86,15 @@ export const useOrdenStore = create<OrdenState>((set, get) => ({
     set((s) => ({
       items: s.items.map((item, i) =>
         i === index ? { ...item, cantidad: Math.max(1, cantidad) } : item
+      ),
+    })),
+
+  actualizarProducto: (index, producto, cantidad) =>
+    set((s) => ({
+      items: s.items.map((item, i) =>
+        i === index
+          ? { ...item, producto, cantidad: Math.max(1, cantidad) }
+          : item
       ),
     })),
 

@@ -1,6 +1,11 @@
 "use client";
 
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
+import {
+  calcularCantidadParaUnidades,
+  obtenerUnidadesPorPresentacion,
+} from "@/lib/producto";
+import { CATEGORIAS_COMPRA, clasificarCategoriaProducto } from "@/lib/categorias";
 import { useOrdenStore } from "../store/useOrdenStore";
 import type { ItemOrden, ProductoBuscado } from "../types";
 
@@ -32,6 +37,7 @@ export default function Home() {
   const reemplazarItems = useOrdenStore((s) => s.reemplazarItems);
   const setPresupuesto = useOrdenStore((s) => s.setPresupuesto);
   const agregarItems = useOrdenStore((s) => s.agregarItems);
+  const actualizarProducto = useOrdenStore((s) => s.actualizarProducto);
   const total = useOrdenStore((s) => s.total);
   const delta = useOrdenStore((s) => s.delta);
   const proveedoresUnicos = useOrdenStore((s) => s.proveedoresUnicos);
@@ -42,6 +48,20 @@ export default function Home() {
   const proveedores = proveedoresUnicos();
   const porcentajeUsado = Math.min((totalActual / presupuesto) * 100, 100);
   const seExcede = deltaActual < 0;
+  const gruposOrden = CATEGORIAS_COMPRA.map((categoria) => {
+    const itemsCategoria = items
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => clasificarCategoriaProducto(item.producto) === categoria.id);
+    const subtotal = itemsCategoria.reduce(
+      (suma, { item }) => suma + item.producto.precioAprox * item.cantidad,
+      0
+    );
+    const proveedoresCategoria = new Set(
+      itemsCategoria.map(({ item }) => item.producto.proveedor)
+    ).size;
+
+    return { ...categoria, items: itemsCategoria, subtotal, proveedoresCategoria };
+  }).filter((categoria) => categoria.items.length > 0);
 
   const cargarEjemplo = () => {
     if (eventosPasados.length > 0) {
@@ -70,10 +90,27 @@ export default function Home() {
 
       for (const base of ITEMS_BASE) {
         const productos = await buscar(base.consulta, 3);
-        if (productos[0]) {
+        const alternativas = productos
+          .filter((producto) => producto.tipoEnlace !== "catalogo")
+          .sort((a, b) => {
+            const prioridadA = a.tipoEnlace === "ficha" ? 0 : 1;
+            const prioridadB = b.tipoEnlace === "ficha" ? 0 : 1;
+            if (prioridadA !== prioridadB) return prioridadA - prioridadB;
+            return (
+              a.precioAprox / obtenerUnidadesPorPresentacion(a) -
+              b.precioAprox / obtenerUnidadesPorPresentacion(b)
+            );
+          });
+        const productoElegido = alternativas[0];
+
+        if (productoElegido) {
           nuevosItems.push({
-            producto: productos[0],
-            cantidad: Math.max(1, Math.round((numPersonas ?? 0) * base.porPersona)),
+            producto: productoElegido,
+            alternativas,
+            cantidad: calcularCantidadParaUnidades(
+              Math.max(1, Math.ceil((numPersonas ?? 0) * base.porPersona)),
+              productoElegido
+            ),
           });
         }
       }
@@ -116,6 +153,19 @@ export default function Home() {
         .join(", ")}.`;
     },
   });
+
+  const cambiarAlternativa = (index: number, producto: ProductoBuscado) => {
+    const itemActual = items[index];
+    if (!itemActual) return;
+
+    const unidadesCubiertas =
+      itemActual.cantidad * obtenerUnidadesPorPresentacion(itemActual.producto);
+    actualizarProducto(
+      index,
+      producto,
+      calcularCantidadParaUnidades(unidadesCubiertas, producto)
+    );
+  };
 
   return (
     <main className="flex flex-col min-h-screen bg-zinc-950 text-zinc-100">
@@ -227,7 +277,26 @@ export default function Home() {
               </div>
             ) : (
               <div className="divide-y divide-zinc-800">
-                {items.map((item, index) => (
+                {gruposOrden.map((grupo) => (
+                  <section key={grupo.id}>
+                    <header className="flex items-center justify-between gap-4 bg-zinc-900/70 px-5 py-3">
+                      <div>
+                        <h3 className="text-sm font-semibold text-zinc-300">
+                          {grupo.etiqueta}
+                        </h3>
+                        <p className="mt-0.5 text-xs text-zinc-600">
+                          {grupo.items.length} ítem{grupo.items.length !== 1 && "s"} · {grupo.proveedoresCategoria} proveedor{grupo.proveedoresCategoria !== 1 && "es"}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-zinc-600">Subtotal</p>
+                        <p className="font-mono text-sm font-semibold text-zinc-200">
+                          S/ {grupo.subtotal.toFixed(2)}
+                        </p>
+                      </div>
+                    </header>
+                    <div className="divide-y divide-zinc-800">
+                {grupo.items.map(({ item, index }) => (
                   <div
                     key={index}
                     className="px-5 py-3 flex items-center gap-4 hover:bg-zinc-800/50 transition"
@@ -251,6 +320,40 @@ export default function Home() {
                           Ver fuente ↗
                         </a>
                       </div>
+                      <p
+                        className={`mt-1 text-xs ${
+                          item.producto.tipoEnlace === "ficha"
+                            ? "text-emerald-400"
+                            : "text-amber-400"
+                        }`}
+                      >
+                        {item.producto.tipoEnlace === "ficha"
+                          ? "Enlace a ficha de producto"
+                          : "Enlace no verificado como ficha exacta"}
+                      </p>
+                      {item.alternativas && item.alternativas.length > 1 && (
+                        <label className="mt-2 block text-xs text-zinc-500">
+                          Alternativa
+                          <select
+                            aria-label={`Alternativa para ${item.producto.nombre}`}
+                            className="mt-1 block max-w-full rounded border border-zinc-700 bg-zinc-800 px-2 py-1 text-zinc-200"
+                            value={item.producto.url}
+                            onChange={(event) => {
+                              const alternativa = item.alternativas?.find(
+                                (producto) => producto.url === event.target.value
+                              );
+                              if (alternativa) cambiarAlternativa(index, alternativa);
+                            }}
+                          >
+                            {item.alternativas.map((producto, alternativaIndex) => (
+                              <option key={`${producto.url}-${alternativaIndex}`} value={producto.url}>
+                                {producto.nombre} — S/ {producto.precioAprox.toFixed(2)}
+                                {producto.tipoEnlace === "ficha" ? " (ficha)" : ""}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      )}
                     </div>
 
                     {/* Precio unitario */}
@@ -258,7 +361,11 @@ export default function Home() {
                       <span className="font-mono">
                         S/ {item.producto.precioAprox.toFixed(2)}
                       </span>
-                      <span className="block text-zinc-600">c/u</span>
+                      <span className="block text-zinc-600">
+                        {obtenerUnidadesPorPresentacion(item.producto) > 1
+                          ? `x${obtenerUnidadesPorPresentacion(item.producto)} unidades`
+                          : "c/u"}
+                      </span>
                     </div>
 
                     {/* Controles de cantidad */}
@@ -303,6 +410,9 @@ export default function Home() {
                       ×
                     </button>
                   </div>
+                ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             )}
