@@ -1,6 +1,11 @@
 "use client";
 
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
+import {
+  calcularCantidadParaUnidades,
+  obtenerUnidadesPorPresentacion,
+} from "@/lib/producto";
+import { CATEGORIAS_COMPRA, clasificarCategoriaProducto } from "@/lib/categorias";
 import { useOrdenStore } from "../store/useOrdenStore";
 import type { ItemOrden, ProductoBuscado } from "../types";
 import { OutBox } from "./components/OutBox";
@@ -33,6 +38,7 @@ export default function Home() {
   const reemplazarItems = useOrdenStore((s) => s.reemplazarItems);
   const setPresupuesto = useOrdenStore((s) => s.setPresupuesto);
   const agregarItems = useOrdenStore((s) => s.agregarItems);
+  const actualizarProducto = useOrdenStore((s) => s.actualizarProducto);
   const total = useOrdenStore((s) => s.total);
   const delta = useOrdenStore((s) => s.delta);
   const proveedoresUnicos = useOrdenStore((s) => s.proveedoresUnicos);
@@ -43,6 +49,20 @@ export default function Home() {
   const proveedores = proveedoresUnicos();
   const porcentajeUsado = Math.min((totalActual / presupuesto) * 100, 100);
   const seExcede = deltaActual < 0;
+  const gruposOrden = CATEGORIAS_COMPRA.map((categoria) => {
+    const itemsCategoria = items
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => clasificarCategoriaProducto(item.producto) === categoria.id);
+    const subtotal = itemsCategoria.reduce(
+      (suma, { item }) => suma + item.producto.precioAprox * item.cantidad,
+      0
+    );
+    const proveedoresCategoria = new Set(
+      itemsCategoria.map(({ item }) => item.producto.proveedor)
+    ).size;
+
+    return { ...categoria, items: itemsCategoria, subtotal, proveedoresCategoria };
+  }).filter((categoria) => categoria.items.length > 0);
 
   const cargarEjemplo = () => {
     if (eventosPasados.length > 0) {
@@ -71,10 +91,27 @@ export default function Home() {
 
       for (const base of ITEMS_BASE) {
         const productos = await buscar(base.consulta, 3);
-        if (productos[0]) {
+        const alternativas = productos
+          .filter((producto) => producto.tipoEnlace !== "catalogo")
+          .sort((a, b) => {
+            const prioridadA = a.tipoEnlace === "ficha" ? 0 : 1;
+            const prioridadB = b.tipoEnlace === "ficha" ? 0 : 1;
+            if (prioridadA !== prioridadB) return prioridadA - prioridadB;
+            return (
+              a.precioAprox / obtenerUnidadesPorPresentacion(a) -
+              b.precioAprox / obtenerUnidadesPorPresentacion(b)
+            );
+          });
+        const productoElegido = alternativas[0];
+
+        if (productoElegido) {
           nuevosItems.push({
-            producto: productos[0],
-            cantidad: Math.max(1, Math.round((numPersonas ?? 0) * base.porPersona)),
+            producto: productoElegido,
+            alternativas,
+            cantidad: calcularCantidadParaUnidades(
+              Math.max(1, Math.ceil((numPersonas ?? 0) * base.porPersona)),
+              productoElegido
+            ),
           });
         }
       }
@@ -117,6 +154,19 @@ export default function Home() {
         .join(", ")}.`;
     },
   });
+
+  const cambiarAlternativa = (index: number, producto: ProductoBuscado) => {
+    const itemActual = items[index];
+    if (!itemActual) return;
+
+    const unidadesCubiertas =
+      itemActual.cantidad * obtenerUnidadesPorPresentacion(itemActual.producto);
+    actualizarProducto(
+      index,
+      producto,
+      calcularCantidadParaUnidades(unidadesCubiertas, producto)
+    );
+  };
 
   return (
     <main className="min-h-screen bg-[#090a0f] text-[#f3f4f6] relative overflow-x-hidden flex flex-col items-center justify-start pb-20">
